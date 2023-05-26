@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Midea Dishwasher Matter Demo</title>
+    <meta name="weex-viewport" content="750">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">   
+</head>
+<body>
+    <h2>Midea Dishwasher Matter Demo</h2>
+    <div>
+        <div style="margin-top:20px;">
+            <button class="order-button" id="power-on" onclick="powOn();">Power ON</button>
+            <button class="order-button" id="power-off" onclick="powOff();">Power OFF</button>
+        </div>
+        <div style="margin-top:20px;">
+            <button class="order-button" id="start" onclick="start();">Start</button>
+            <button class="order-button" id="pause" onclick="pause();">Pause</button>
+            <button class="order-button" id="cancel" onclick="cancel();">Cancel</button>
+        </div>
+        <div style="margin-top:20px;">
+            <button class="order-button" id="heavy" onclick="heavy();">Heavy</button>
+            <button class="order-button" id="normal" onclick="normal();">Normal</button>
+            <button class="order-button" id="light" onclick="light();">Light</button>
+        </div>
+        <div style="margin-top:40px;">
+            <div id="status" style="font-size: 30px;">Now Dishwasher Status： None</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function powOn(){   
+        /*开机 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("power-on");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power ON"
+			
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('~/apps/chip-tool onoff on 1 1');
+
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function powOff(){   
+        /*关机 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("power-off");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power OFF"
+			
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('~/apps/chip-tool onoff off 1 1');
+
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function start(){   
+        /*启动 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("start");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Start"
+            
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('start');
+
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function pause(){   
+        /*暂停 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("pause");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Pause"
+            
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('pause');
+
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function cancel(){   
+        /*取消 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("cancel");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Cancel"
+            
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('cancel');
+
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function heavy(){   
+        /*加强洗 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("heavy");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Heavy"
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function normal(){   
+        /*普通洗 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("normal");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Normal"
+            
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('normal');
+
+        },1000)
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function light(){   
+        /*ECO节能洗 */
+        setTimeout(function(){
+            var tempBtn = document.getElementById("light");
+            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Light"
+			
+            var url = "/cmd";
+			var httpRequest = new XMLHttpRequest();
+			httpRequest.open('POST', url, true);
+			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+			httpRequest.send('light');
+
+        },1000)
+        
+    }
+    
+
+</script>
+<style type="text/css">
+.order-context{
+    width: 60%;
+}
+.order-button {
+    margin-right: 40px;
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.td-width1 {
+    width: 100px;
+    height: 15px;
+}
+.td-width2 {
+    width: 200px;
+    height: 15px;
+}
+</style>
+</html>
