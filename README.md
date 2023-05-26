@@ -8,7 +8,8 @@ Matter Dishwasher controller web on Raspberry Pi
 3. `cd web`
 4. 首次运行要先安装bottle，执行`pip3 install bottle`
 5. `python3 index.py`
-6. 点击按钮Power ON、Power OFF，查看灯状态是否有变化。
+6. 打开网页，树莓派IP:8088，例如192.168.1.104:8088
+7. 点击按钮Power ON、Power OFF，查看灯状态是否有变化。
 
 ## 测试洗碗机Test Dishwasher
 
