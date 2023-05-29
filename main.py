@@ -13,7 +13,7 @@ def cmd():
     adss = request.body.read().decode()  #### 接收到 客户端 发过来的数据
     print("### Do cmd:" + adss)
     ret = os.system(adss)
-    print('ret=' + ret)
+    print('ret=%d' %ret)
     return "OK"
 
 
