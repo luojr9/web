@@ -1,6 +1,6 @@
 from bottle import get, post, run, request, template
 
-import os
+import subprocess
 
 #### 这个是 客户端请求 服务端就发给一个 index.html 控制界面给客户端
 @get("/")
@@ -12,8 +12,9 @@ def index():
 def cmd():
     adss = request.body.read().decode()  #### 接收到 客户端 发过来的数据
     print("### Do cmd:" + adss)
-    ret = os.system(adss)
+    ret, val = subprocess.getstatusoutput(adss)
     print('ret=%d' %ret)
+    print('val=' + val)
     return "OK"
 
 
