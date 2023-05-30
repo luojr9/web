@@ -12,9 +12,18 @@ def index():
 def cmd():
     adss = request.body.read().decode()  #### 接收到 客户端 发过来的数据
     print("### Do cmd:" + adss)
-    ret, val = subprocess.getstatusoutput(adss)
+    ret, val = subprocess.getstatusoutput(adss)  # 0表示指令成功执行，1表示失败，256表示没有返回结果
     print('ret=%d' %ret)
     print('val=' + val)
+    i = val.find('OnOff: TRUE')
+    if i > -1:
+        print('OnOff: TRUE')
+        return 'on'
+    else:
+        i = val.find('OnOff: FALSE')
+        if i > -1:
+            print('OnOff: FALSE')
+            return 'off'
     return "OK"
 
 
