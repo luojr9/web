@@ -20,8 +20,8 @@
             <button class="order-button" id="cancel" onclick="cancel();">Cancel</button>
         </div>
         <div style="margin-top:20px;">
-            <button class="order-button" id="heavy" onclick="heavy();">Heavy</button>
             <button class="order-button" id="normal" onclick="normal();">Normal</button>
+            <button class="order-button" id="heavy" onclick="heavy();">Heavy</button>
             <button class="order-button" id="light" onclick="light();">Light</button>
         </div>
         <div style="margin-top:20px;">
@@ -29,11 +29,15 @@
         </div>
         <div style="margin-top:40px;">
             <div id="status" style="font-size: 30px;">Now Dishwasher Status： None</div>
+            <div id="operational-state" style="font-size: 30px;">Now Dishwasher Operational State: None</div>
+            <div id="mode" style="font-size: 30px;">Now Dishwasher Mode: None</div>
             <div id="response" style="font-size: 30px;">Response： None</div>
         </div>
     </div>
 </body>
 <script type="text/javascript">
+    GetStatus();
+
     /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
     function powOn(){   
         /*开机 */
@@ -46,11 +50,8 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool onoff on 1 1');
+        httpRequest.send('~/apps/chip-tool-1.2 onoff on 2 1');
 
-        httpRequest.ontimeout = function(event){
-            document.getElementById("response").innerHTML = "Response：请求超时！";
-        }
         //该属性每次变化时会触发
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
@@ -76,7 +77,7 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool onoff off 1 1');
+        httpRequest.send('~/apps/chip-tool-1.2 onoff off 2 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -92,7 +93,8 @@
     function start(){   
         /*启动 */
             var tempBtn = document.getElementById("start");
-            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Start"
+            document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Running"
+            document.getElementById("pause").innerHTML = "Pause";
         document.getElementById("response").innerHTML = "Response：None";
             
             var url = "/cmd";
@@ -100,7 +102,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('start');
+			httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate start 2 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -115,8 +117,36 @@
     /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
     function pause(){   
         /*暂停 */
-            var tempBtn = document.getElementById("pause");
-            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Pause"
+        var tempBtn = document.getElementById("pause");
+        document.getElementById("response").innerHTML = "Response：None";
+            
+        var url = "/cmd";
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', url, true);
+        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+        if (document.getElementById("operational-state").innerHTML === "Now Dishwasher Operational State:      Paused") {
+            document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Running"
+            document.getElementById("pause").innerHTML = "Pause";
+            httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate resume 2 1');
+        } else {
+            document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Paused"
+            document.getElementById("pause").innerHTML = "Resume";
+            httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate pause 2 1');
+        }
+
+        httpRequest.onreadystatechange = function(){
+            //若响应完成且请求成功
+            if(httpRequest.readyState === 4 && httpRequest.status === 200){
+                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+            }
+        }
+        
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function cancel(){   
+        /*取消 */
+            var tempBtn = document.getElementById("cancel");
+            document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Stopped"
         document.getElementById("response").innerHTML = "Response：None";
             
             var url = "/cmd";
@@ -124,7 +154,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('pause');
+			httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate stop 2 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -137,10 +167,10 @@
         
     }
     /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
-    function cancel(){   
-        /*取消 */
-            var tempBtn = document.getElementById("cancel");
-            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Cancel"
+    function normal(){   
+        /*普通洗 */
+            var tempBtn = document.getElementById("normal");
+            document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Normal"
         document.getElementById("response").innerHTML = "Response：None";
             
             var url = "/cmd";
@@ -148,7 +178,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('cancel');
+			httpRequest.send('~/apps/chip-tool-1.2 dishwashermodeselect change-to-mode 0 2 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -164,7 +194,7 @@
     function heavy(){   
         /*加强洗 */
             var tempBtn = document.getElementById("heavy");
-            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Heavy"
+            document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Heavy"
         document.getElementById("response").innerHTML = "Response：None";
 
         var url = "/cmd";
@@ -172,7 +202,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('heavy');
+			httpRequest.send('~/apps/chip-tool-1.2 dishwashermodeselect change-to-mode 1 2 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -180,30 +210,6 @@
             }
         }
 
-
-        setTimeout(function(){
-        },1000)
-        
-    }
-    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
-    function normal(){   
-        /*普通洗 */
-            var tempBtn = document.getElementById("normal");
-            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Normal"
-        document.getElementById("response").innerHTML = "Response：None";
-            
-            var url = "/cmd";
-			var httpRequest = new XMLHttpRequest();
-			httpRequest.open('POST', url, true);
-			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
-
-			httpRequest.send('normal');
-        httpRequest.onreadystatechange = function(){
-            //若响应完成且请求成功
-            if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
-            }
-        }
 
         setTimeout(function(){
         },1000)
@@ -213,7 +219,7 @@
     function light(){   
         /*ECO节能洗 */
             var tempBtn = document.getElementById("light");
-            document.getElementById("status").innerHTML = "Now Dishwasher Status：      Light"
+            document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Light"
         document.getElementById("response").innerHTML = "Response：None";
 			
             var url = "/cmd";
@@ -221,7 +227,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('ls');
+			httpRequest.send('~/apps/chip-tool-1.2 dishwashermodeselect change-to-mode 2 2 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -236,7 +242,6 @@
     /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
     function GetStatus(){   
         var tempBtn = document.getElementById("GetStatus");
-        document.getElementById("status").innerHTML = "Now Dishwasher Status：      GetStatus"
         document.getElementById("response").innerHTML = "Response：None";
         
         var url = "/cmd";
@@ -244,7 +249,8 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool onoff read on-off 1 1');
+        httpRequest.send('~/apps/chip-tool-1.2 onoff read on-off 2 1');
+        
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -253,6 +259,46 @@
                     document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power ON"
                 } else if ("off" == httpRequest.responseText) {
                     document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power OFF"
+                }
+            }
+        }
+
+        var httpRequest2 = new XMLHttpRequest();
+        httpRequest2.open('POST', url, true);
+        httpRequest2.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+        httpRequest2.send('~/apps/chip-tool-1.2 dishwasheroperationalstate read operational-state 2 1');
+        httpRequest2.onreadystatechange = function(){
+            //若响应完成且请求成功
+            if(httpRequest2.readyState === 4 && httpRequest2.status === 200){
+                document.getElementById("response").innerHTML = "Response：" + httpRequest2.responseText;
+                if ("Running" == httpRequest2.responseText) {
+                    document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Running"
+                    document.getElementById("pause").innerHTML = "Pause";
+                } else if ("Stopped" == httpRequest2.responseText) {
+                    document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Stopped"
+                } else if ("Paused" == httpRequest2.responseText) {
+                    document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Paused"
+                    document.getElementById("pause").innerHTML = "Resume";
+                }
+            }
+        }
+
+        var httpRequest3 = new XMLHttpRequest();
+        httpRequest3.open('POST', url, true);
+        httpRequest3.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+        httpRequest3.send('~/apps/chip-tool-1.2 dishwashermodeselect read current-mode 2 1');
+        httpRequest3.onreadystatechange = function(){
+            //若响应完成且请求成功
+            if(httpRequest3.readyState === 4 && httpRequest3.status === 200){
+                document.getElementById("response").innerHTML = "Response：" + httpRequest3.responseText;
+                if ("normal" == httpRequest3.responseText) {
+                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Normal"
+                } else if ("heavy" == httpRequest3.responseText) {
+                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Heavy"
+                } else if ("light" == httpRequest3.responseText) {
+                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Light"
                 }
             }
         }
