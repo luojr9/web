@@ -12,6 +12,10 @@
     <div>
         <div style="margin-top:20px;">
             Node ID: <input type="text" id="nodeid" value="1">
+            SSID: <input type="text" id="ssid">
+            Password: <input type="text" id="password">
+            <button class="order-button" id="pair" onclick="pair();">Pair</button>
+            <button class="order-button" id="unpair" onclick="unpair();">Unpair</button>
         </div>
         <div style="margin-top:20px;">
             <button class="order-button" id="power-on" onclick="powOn();">Power ON</button>
@@ -31,22 +35,66 @@
             <button class="order-button" id="GetStatus" onclick="GetStatus();">Get Status</button>
         </div>
         <div style="margin-top:40px;">
-            <div id="status" style="font-size: 30px;">Now Dishwasher Status： None</div>
+            <div id="status" style="font-size: 30px;">Now Dishwasher Status: None</div>
             <div id="operational-state" style="font-size: 30px;">Now Dishwasher Operational State: None</div>
             <div id="mode" style="font-size: 30px;">Now Dishwasher Mode: None</div>
-            <div id="response" style="font-size: 30px;">Response： None</div>
+            <div id="response" style="font-size: 30px;">Response:  None</div>
         </div>
     </div>
 </body>
 <script type="text/javascript">
-    GetStatus();
+    // GetStatus();  // 未配对或未通信异常，会导致获取命令超时，Python命令阻塞几分钟
 
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function pair(){   
+        /*配对 */
+        var tempBtn = document.getElementById("pair");
+        document.getElementById("response").innerHTML = "Response: pairing";
+        
+        var url = "/cmd";
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', url, true);
+        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+        httpRequest.send('~/apps/chip-tool-1.2 pairing ble-wifi ' + document.getElementById("nodeid").value + ' ' +
+            document.getElementById("ssid").value + ' ' + document.getElementById("password").value + 
+            ' 20202021 3840 --paa-trust-store-path /var/paa-root-certs/');
+
+        //该属性每次变化时会触发
+        httpRequest.onreadystatechange = function(){
+            //若响应完成且请求成功
+            if(httpRequest.readyState === 4 && httpRequest.status === 200){
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
+            }
+        }
+    }
+    /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
+    function unpair(){   
+        /*配对 */
+        var tempBtn = document.getElementById("unpair");
+        document.getElementById("response").innerHTML = "Response: unpairing";
+        
+        var url = "/cmd";
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', url, true);
+        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+
+        httpRequest.send('~/apps/chip-tool-1.2 pairing unpair ' + document.getElementById("nodeid").value);
+
+        //该属性每次变化时会触发
+        httpRequest.onreadystatechange = function(){
+            //若响应完成且请求成功
+            if(httpRequest.readyState === 4 && httpRequest.status === 200){
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
+            }
+        }
+    }
     /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
     function powOn(){   
         /*开机 */
         var tempBtn = document.getElementById("power-on");
-        document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power ON"
-        document.getElementById("response").innerHTML = "Response：None";
+        document.getElementById("status").innerHTML = "Now Dishwasher Status:      Power ON"
+        document.getElementById("response").innerHTML = "Response: ......";
         
         var url = "/cmd";
         var httpRequest = new XMLHttpRequest();
@@ -59,7 +107,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
         setTimeout(function(){
@@ -72,8 +120,8 @@
     function powOff(){   
         /*关机 */
         var tempBtn = document.getElementById("power-off");
-        document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power OFF"
-        document.getElementById("response").innerHTML = "Response：None";
+        document.getElementById("status").innerHTML = "Now Dishwasher Status:      Power OFF"
+        document.getElementById("response").innerHTML = "Response: ......";
         
         var url = "/cmd";
         var httpRequest = new XMLHttpRequest();
@@ -84,7 +132,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
         setTimeout(function(){
@@ -98,7 +146,7 @@
             var tempBtn = document.getElementById("start");
             document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Running"
             document.getElementById("pause").innerHTML = "Pause";
-        document.getElementById("response").innerHTML = "Response：None";
+        document.getElementById("response").innerHTML = "Response: ......";
             
             var url = "/cmd";
 			var httpRequest = new XMLHttpRequest();
@@ -109,7 +157,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
 
@@ -121,7 +169,7 @@
     function pause(){   
         /*暂停 */
         var tempBtn = document.getElementById("pause");
-        document.getElementById("response").innerHTML = "Response：None";
+        document.getElementById("response").innerHTML = "Response: ......";
             
         var url = "/cmd";
         var httpRequest = new XMLHttpRequest();
@@ -140,7 +188,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
         
@@ -150,7 +198,7 @@
         /*取消 */
             var tempBtn = document.getElementById("cancel");
             document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Stopped"
-        document.getElementById("response").innerHTML = "Response：None";
+        document.getElementById("response").innerHTML = "Response: ......";
             
             var url = "/cmd";
 			var httpRequest = new XMLHttpRequest();
@@ -161,7 +209,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
 
@@ -173,8 +221,8 @@
     function normal(){   
         /*普通洗 */
             var tempBtn = document.getElementById("normal");
-            document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Normal"
-        document.getElementById("response").innerHTML = "Response：None";
+            document.getElementById("mode").innerHTML = "Now Dishwasher Mode:      Normal"
+        document.getElementById("response").innerHTML = "Response: ......";
             
             var url = "/cmd";
 			var httpRequest = new XMLHttpRequest();
@@ -185,7 +233,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
 
@@ -197,8 +245,8 @@
     function heavy(){   
         /*加强洗 */
             var tempBtn = document.getElementById("heavy");
-            document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Heavy"
-        document.getElementById("response").innerHTML = "Response：None";
+            document.getElementById("mode").innerHTML = "Now Dishwasher Mode:      Heavy"
+        document.getElementById("response").innerHTML = "Response: ......";
 
         var url = "/cmd";
 			var httpRequest = new XMLHttpRequest();
@@ -209,7 +257,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
 
@@ -222,8 +270,8 @@
     function light(){   
         /*ECO节能洗 */
             var tempBtn = document.getElementById("light");
-            document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Light"
-        document.getElementById("response").innerHTML = "Response：None";
+            document.getElementById("mode").innerHTML = "Now Dishwasher Mode:      Light"
+        document.getElementById("response").innerHTML = "Response: ......";
 			
             var url = "/cmd";
 			var httpRequest = new XMLHttpRequest();
@@ -234,7 +282,7 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
             }
         }
         setTimeout(function(){
@@ -245,7 +293,7 @@
     /* ------------数据协议解析部分-------------Start  Author:liuxp7*/
     function GetStatus(){   
         var tempBtn = document.getElementById("GetStatus");
-        document.getElementById("response").innerHTML = "Response：None";
+        document.getElementById("response").innerHTML = "Response: ......";
         
         var url = "/cmd";
         var httpRequest = new XMLHttpRequest();
@@ -257,11 +305,11 @@
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest.responseText;
                 if ("on" == httpRequest.responseText) {
-                    document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power ON"
+                    document.getElementById("status").innerHTML = "Now Dishwasher Status:      Power ON"
                 } else if ("off" == httpRequest.responseText) {
-                    document.getElementById("status").innerHTML = "Now Dishwasher Status：      Power OFF"
+                    document.getElementById("status").innerHTML = "Now Dishwasher Status:      Power OFF"
                 }
             }
         }
@@ -274,7 +322,7 @@
         httpRequest2.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest2.readyState === 4 && httpRequest2.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest2.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest2.responseText;
                 if ("Running" == httpRequest2.responseText) {
                     document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Running"
                     document.getElementById("pause").innerHTML = "Pause";
@@ -295,13 +343,13 @@
         httpRequest3.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest3.readyState === 4 && httpRequest3.status === 200){
-                document.getElementById("response").innerHTML = "Response：" + httpRequest3.responseText;
+                document.getElementById("response").innerHTML = "Response: " + httpRequest3.responseText;
                 if ("normal" == httpRequest3.responseText) {
-                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Normal"
+                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode:      Normal"
                 } else if ("heavy" == httpRequest3.responseText) {
-                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Heavy"
+                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode:      Heavy"
                 } else if ("light" == httpRequest3.responseText) {
-                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode：      Light"
+                    document.getElementById("mode").innerHTML = "Now Dishwasher Mode:      Light"
                 }
             }
         }

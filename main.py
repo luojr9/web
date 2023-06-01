@@ -19,11 +19,10 @@ def cmd():
     if i > -1:
         print('OnOff: TRUE')
         return 'on'
-    else:
-        i = val.find('OnOff: FALSE')
-        if i > -1:
-            print('OnOff: FALSE')
-            return 'off'
+    i = val.find('OnOff: FALSE')
+    if i > -1:
+        print('OnOff: FALSE')
+        return 'off'
     
     i = val.find('OperationalStateLabel: Running')
     if i > -1:
@@ -55,7 +54,22 @@ def cmd():
                 print('CurrentMode: 2')
                 return 'light'
     
+    i = val.find('CHIP:TOO: Pairing Failure')
+    if i > -1:
+        print('CHIP:TOO: Pairing Failure')
+        return 'pair fail'
+
+    i = val.find('CHIP:TOO: Device commissioning completed with success')
+    if i > -1:
+        print('CHIP:TOO: Device commissioning completed with success')
+        return 'pair success'
+
+    i = val.find('CHIP:TOO: Device commissioning Failure')
+    if i > -1:
+        print('CHIP:TOO: Device commissioning Failure')
+        return 'pair fail'
     return "OK"
+
 
 
 run(host='0.0.0.0', port=8088, debug=True)  #### 开启服务端
