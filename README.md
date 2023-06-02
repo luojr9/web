@@ -1,48 +1,47 @@
+[中文说明](README_CN.md)
+
 # web
+
 Matter Dishwasher controller web on Raspberry Pi
 
-## 准备工作
+## Preparations
 
-1. 树莓派：把chip-tool-1.2文件放到目录~/apps。
-2. 树莓派：首次运行要先安装bottle，执行`pip3 install bottle`
-3. 树莓派：`cd ~`
-4. 树莓派：clone这个Git仓库
-5. 树莓派：`cd ~/web`
-6. 树莓派：`python3 main.py`
-7. 树莓派：把PAA证书Chip-Midea-PAA-118C-Cert.der放在目录/var/paa-root-certs/
-8. 查看树莓派IP
-9. 电脑：打开网页浏览器，网址输入树莓派IP，可以显示网页Matter Test Harness (v2.8-official)。确认电脑和树莓派的网络已连通。
-10. 电脑：网址输入 树莓派IP:8088，例如192.168.1.104:8088，打开网页Midea Dishwasher Matter Demo
-11. WiFi模组：烧录支持Matter洗碗机的固件。
+1. Raspberry Pi: Put the chip-tool-1.2 file in the directory ~/apps.
+2. Raspberry Pi: The first run must first install the bottle, execute`pip3 install bottle`
+3. Raspberry Pi:`cd ~`
+4. Raspberry Pi: clone, this Git repository
+5. Raspberry Pi:`cd ~/web`
+6. Raspberry Pi:`python3 main.py`
+7. Raspberry Pi: Put the PAA certificate Chip-Midea-PAA-118C-Cert.der in the directory /var/paa-root-certs/
+8. Check out the Raspberry Pi IP
+9. Computer: Open a web browser, enter the Raspberry Pi IP at the URL, and you can display the web page Matter Test Harness (v2.8-official). Make sure that the computer and the Raspberry Pi are connected to the network.
+10. Computer: Enter the URL Raspberry Pi IP: 8088, for example, 192.168.1.104:8088, open the web page Midea Dishwasher Matter Demo
+11. WiFi module: Burn firmware that supports Matter dishwasher.
 
+## Raspberry Pi controls the dishwasher
 
+Control end: Raspberry Pi
 
-## 树莓派控制洗碗机
+Servant: Dishwasher
 
-控制端：树莓派
+Test steps:
 
-服务端：洗碗机
+1. Dishwasher: power on, turn on.
+2. Dishwasher: Press and hold the WiFi button for 3 seconds and wait for pairing.
+3. Computer: Open the demo web page, the default Node ID is 1, fill in the SSID and password of the wireless router, click [Pair], wait for more than ten seconds, and the Response: pair success will be displayed if the pairing is successful.
+4. Computer: Click [Power OFF] to shut down, [Power ON] to turn on,
+5. Computer: Click [Start] to start, [Pause] to pause, [Cancel] to stop
+6. Computer: Click [Normal], [Heavy], [Light] to select the washing mode
+7. Computer: Click [Get Status] to get the dishwasher status.
 
-测试步骤：
+## Raspberry Pi simulates a dishwasher
 
-1. 洗碗机：上电，开机。
-2. 洗碗机：长按WiFi键3秒，等待配对。
-3. 电脑：打开Demo网页，Node ID默认是1，填入无线路由器的SSID和密码，点【Pair】，等待十多秒，配对成功则显示Response: pair success。
-4. 电脑：点击【Power OFF】关机，【Power ON】开机，
-5. 电脑：点击【Start】启动，【Pause】暂停，【Cancel】停止
-6. 电脑：点击【Normal】、【Heavy】、【Light】选择洗涤模式
-7. 电脑：点击【Get Status】获取洗碗机状态。
+Control end: Raspberry Pi
 
+Server: Raspberry Pi simulation dishwasher APP
 
-
-## 树莓派模拟洗碗机
-
-控制端：树莓派
-
-服务端：树莓派模拟洗碗机APP
-
-1. 树莓派：`cd ~/apps`
-2. 树莓派：`./chip-dishwasher-app`
-3. 树莓派：配对，`./chip-tool-1.2 pairing onnetwork-long 2 20202021 3840`
-4. 电脑：网页修改Node ID为2。
-5. 电脑：点击【Power ON】开机，【Power OFF】关机。
+1. Raspberry Pi:`cd ~/apps`
+2. Raspberry Pi:`./chip-dishwasher-app`
+3. Raspberry Pi: pairing,`./chip-tool-1.2 pairing onnetwork-long 2 20202021 3840`
+4. Computer: Change the Node ID to 2.
+5. Computer: Click [Power ON] to turn on, [Power OFF] to shut down.
