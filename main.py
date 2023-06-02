@@ -54,21 +54,55 @@ def cmd():
                 print('CurrentMode: 2')
                 return 'light'
     
-    i = val.find('CHIP:TOO: Pairing Failure')
-    if i > -1:
-        print('CHIP:TOO: Pairing Failure')
-        return 'pair fail'
-
     i = val.find('CHIP:TOO: Device commissioning completed with success')
     if i > -1:
         print('CHIP:TOO: Device commissioning completed with success')
         return 'pair success'
 
+    i = val.find('CHIP:TOO: Device unpair completed with success')
+    if i > -1:
+        print('CHIP:TOO: Device unpair completed with success')
+        return 'unpair success'
+
+    i = val.find('CHIP:BLE: Scan complete. No matching device found.')
+    if i > -1:
+        print('CHIP:BLE: Scan complete. No matching device found.')
+        return 'Scan complete. No matching device found.'
+
     i = val.find('CHIP:TOO: Device commissioning Failure')
     if i > -1:
         print('CHIP:TOO: Device commissioning Failure')
-        return 'pair fail'
-    return "OK"
+        return 'Device commissioning Failure'
+
+    i = val.find('CHIP:TOO: InitArgs: Invalid argument')
+    if i > -1:
+        print('CHIP:TOO: InitArgs: Invalid argument')
+        return 'Invalid argument'
+
+    i = val.find('CHIP:TOO: Pairing Failure')
+    if i > -1:
+        print('CHIP:TOO: Pairing Failure')
+        return 'Pairing Failure'
+
+    i = val.find('Device unpair Failure')
+    if i > -1:
+        print('Device unpair Failure')
+        return 'Device unpair Failure'
+
+    i = val.find('CHIP:CSM: FindOrEstablishSession: No existing OperationalSessionSetup instance found')
+    if i > -1:
+        print('No node')
+        return 'No node'
+
+
+
+
+    if 0 == ret:
+        return "OK"
+    if 1 == ret:
+        return "NG"
+    if 256 == ret:
+        return "NONE"
 
 
 
