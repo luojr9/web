@@ -89,12 +89,6 @@ def cmd():
         print('Device unpair Failure')
         return 'Device unpair Failure'
 
-    i = val.find('CHIP:CSM: FindOrEstablishSession: No existing OperationalSessionSetup instance found')
-    if i > -1:
-        print('No node')
-        return 'No node'
-
-
 
 
     if 0 == ret:

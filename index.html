@@ -14,8 +14,10 @@
             Node ID: <input type="text" id="nodeid" value="1">
         </div>
         <div style="margin-top:20px;">
-            SSID: <input type="text" id="ssid" value="HM12345678">
-            Password: <input type="text" id="password" value="1234567890">
+            SSID: <input type="text" id="ssid" value="smart-US">
+            Password: <input type="text" id="password" value="midea2023!">
+            setup-pin-code: <input type="text" id="setup-pin-code" value="30870309">
+            discriminator: <input type="text" id="discriminator" value="899"> 
             <button class="order-button" id="pair" onclick="pair();">Pair Reality</button>
             <button class="order-button" id="pairSim" onclick="pairSim();">Pair Simulator</button>
             <button class="order-button" id="unpair" onclick="unpair();">Unpair</button>
@@ -59,9 +61,10 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool-1.2 pairing ble-wifi ' + document.getElementById("nodeid").value + ' ' +
-            document.getElementById("ssid").value + ' ' + document.getElementById("password").value + 
-            ' 20202021 3840 --paa-trust-store-path /var/paa-root-certs/');
+        httpRequest.send('~/apps/chip-tool pairing ble-wifi ' + document.getElementById("nodeid").value + ' ' +
+            document.getElementById("ssid").value + ' ' + document.getElementById("password").value + ' ' +
+            document.getElementById("setup-pin-code").value + ' ' + document.getElementById("discriminator").value +
+            ' --paa-trust-store-path /var/paa-root-certs/');
 
         //该属性每次变化时会触发
         httpRequest.onreadystatechange = function(){
@@ -82,7 +85,8 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool-1.2 pairing onnetwork-long ' + document.getElementById("nodeid").value + ' 20202021 3840');
+        httpRequest.send('~/apps/chip-tool pairing onnetwork-long ' + document.getElementById("nodeid").value + ' ' + 
+            document.getElementById("setup-pin-code").value + ' ' + document.getElementById("discriminator").value);
 
         //该属性每次变化时会触发
         httpRequest.onreadystatechange = function(){
@@ -103,7 +107,7 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool-1.2 pairing unpair ' + document.getElementById("nodeid").value);
+        httpRequest.send('~/apps/chip-tool pairing unpair ' + document.getElementById("nodeid").value);
 
         //该属性每次变化时会触发
         httpRequest.onreadystatechange = function(){
@@ -125,7 +129,7 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool-1.2 onoff on ' + document.getElementById("nodeid").value + ' 1');
+        httpRequest.send('~/apps/chip-tool onoff on ' + document.getElementById("nodeid").value + ' 1');
 
         //该属性每次变化时会触发
         httpRequest.onreadystatechange = function(){
@@ -152,7 +156,7 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool-1.2 onoff off ' + document.getElementById("nodeid").value + ' 1');
+        httpRequest.send('~/apps/chip-tool onoff off ' + document.getElementById("nodeid").value + ' 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -177,7 +181,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate start ' + document.getElementById("nodeid").value + ' 1');
+			httpRequest.send('~/apps/chip-tool dishwasheroperationalstate start ' + document.getElementById("nodeid").value + ' 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -202,11 +206,11 @@
         if (document.getElementById("operational-state").innerHTML === "Now Dishwasher Operational State:      Paused") {
             document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Running"
             document.getElementById("pause").innerHTML = "Pause";
-            httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate resume ' + document.getElementById("nodeid").value + ' 1');
+            httpRequest.send('~/apps/chip-tool dishwasheroperationalstate resume ' + document.getElementById("nodeid").value + ' 1');
         } else {
             document.getElementById("operational-state").innerHTML = "Now Dishwasher Operational State:      Paused"
             document.getElementById("pause").innerHTML = "Resume";
-            httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate pause ' + document.getElementById("nodeid").value + ' 1');
+            httpRequest.send('~/apps/chip-tool dishwasheroperationalstate pause ' + document.getElementById("nodeid").value + ' 1');
         }
 
         httpRequest.onreadystatechange = function(){
@@ -229,7 +233,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('~/apps/chip-tool-1.2 dishwasheroperationalstate stop ' + document.getElementById("nodeid").value + ' 1');
+			httpRequest.send('~/apps/chip-tool dishwasheroperationalstate stop ' + document.getElementById("nodeid").value + ' 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -253,7 +257,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('~/apps/chip-tool-1.2 dishwashermodeselect change-to-mode 0 ' + document.getElementById("nodeid").value + ' 1');
+			httpRequest.send('~/apps/chip-tool dishwashermodeselect change-to-mode 0 ' + document.getElementById("nodeid").value + ' 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -277,7 +281,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('~/apps/chip-tool-1.2 dishwashermodeselect change-to-mode 1 ' + document.getElementById("nodeid").value + ' 1');
+			httpRequest.send('~/apps/chip-tool dishwashermodeselect change-to-mode 1 ' + document.getElementById("nodeid").value + ' 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -302,7 +306,7 @@
 			httpRequest.open('POST', url, true);
 			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-			httpRequest.send('~/apps/chip-tool-1.2 dishwashermodeselect change-to-mode 2 ' + document.getElementById("nodeid").value + ' 1');
+			httpRequest.send('~/apps/chip-tool dishwashermodeselect change-to-mode 2 ' + document.getElementById("nodeid").value + ' 1');
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest.readyState === 4 && httpRequest.status === 200){
@@ -324,7 +328,7 @@
         httpRequest.open('POST', url, true);
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest.send('~/apps/chip-tool-1.2 onoff read on-off ' + document.getElementById("nodeid").value + ' 1');
+        httpRequest.send('~/apps/chip-tool onoff read on-off ' + document.getElementById("nodeid").value + ' 1');
         
         httpRequest.onreadystatechange = function(){
             //若响应完成且请求成功
@@ -342,7 +346,7 @@
         httpRequest2.open('POST', url, true);
         httpRequest2.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest2.send('~/apps/chip-tool-1.2 dishwasheroperationalstate read operational-state ' + document.getElementById("nodeid").value + ' 1');
+        httpRequest2.send('~/apps/chip-tool dishwasheroperationalstate read operational-state ' + document.getElementById("nodeid").value + ' 1');
         httpRequest2.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest2.readyState === 4 && httpRequest2.status === 200){
@@ -363,7 +367,7 @@
         httpRequest3.open('POST', url, true);
         httpRequest3.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
-        httpRequest3.send('~/apps/chip-tool-1.2 dishwashermodeselect read current-mode ' + document.getElementById("nodeid").value + ' 1');
+        httpRequest3.send('~/apps/chip-tool dishwashermodeselect read current-mode ' + document.getElementById("nodeid").value + ' 1');
         httpRequest3.onreadystatechange = function(){
             //若响应完成且请求成功
             if(httpRequest3.readyState === 4 && httpRequest3.status === 200){
