@@ -3,7 +3,7 @@ Matter Dishwasher controller web on Raspberry Pi
 
 ## 准备工作
 
-1. 树莓派：把chip-tool-1.2文件放到目录~/apps。
+1. 树莓派：把chip-tool-1.2文件放到目录~/apps。增加执行权限，`chmod +x ~/apps/chip-tool-1.2`
 2. 树莓派：首次运行要先安装bottle，执行`pip3 install bottle`
 3. 树莓派：`cd ~`
 4. 树莓派：clone这个Git仓库
