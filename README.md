@@ -6,17 +6,18 @@ Matter Dishwasher controller web on Raspberry Pi
 
 ## Preparations
 
-1. Raspberry Pi: Put the chip-tool-1.2 file in the directory ~/apps.
-2. Raspberry Pi: The first run must first install the bottle, execute`pip3 install bottle`
-3. Raspberry Pi: `cd ~`
-4. Raspberry Pi: clone this Git repository
-5. Raspberry Pi: `cd ~/web`
-6. Raspberry Pi: `python3 main.py`
-7. Raspberry Pi: Put the PAA certificate Chip-Midea-PAA-118C-Cert.der in the directory /var/paa-root-certs/
-8. Check out the Raspberry Pi IP
-9. Computer: Open a web browser, enter the Raspberry Pi IP at the URL, and you can display the web page Matter Test Harness (v2.8-official). Make sure that the computer and the Raspberry Pi are connected to the network.
-10. Computer: Enter the URL Raspberry Pi IP: 8088, for example, 192.168.1.104:8088, open the web page Midea Dishwasher Matter Demo
-11. WiFi module: Burn firmware that supports Matter dishwasher.
+1. Raspberry Pi: Put the chip-tool-1.2 file in the directory ~/apps. 
+2. Raspberry Pi: Add execution permission, `chmod +x ~/apps/chip-tool-1.2`
+3. Raspberry Pi: The first run must first install the bottle, execute`pip3 install bottle`
+4. Raspberry Pi: `cd ~`
+5. Raspberry Pi: clone this Git repository
+6. Raspberry Pi: `cd ~/web`
+7. Raspberry Pi: `python3 main.py`
+8. Raspberry Pi: Put the PAA certificate Chip-Midea-PAA-118C-Cert.der in the directory /var/paa-root-certs/
+9. Check out the Raspberry Pi IP
+10. Computer: Open a web browser, enter the Raspberry Pi IP at the URL, and you can display the web page Matter Test Harness (v2.8-official). Make sure that the computer and the Raspberry Pi are connected to the network.
+11. Computer: Enter the URL Raspberry Pi IP: 8088, for example, 192.168.1.104:8088, open the web page Midea Dishwasher Matter Demo
+12. WiFi module: Burn firmware that supports Matter dishwasher.
 
 ## Raspberry Pi controls the dishwasher
 
