@@ -24,19 +24,19 @@ def cmd():
         print('OnOff: FALSE')
         return 'off'
     
-    i = val.find('OperationalStateLabel: Running')
+    i = val.find('OperationalState: 1')
     if i > -1:
-        print('OperationalStateLabel: Running')
+        print('OperationalState: 1')
         return 'Running'
     else:
-        i = val.find('OperationalStateLabel: Stopped')
+        i = val.find('OperationalState: 0')
         if i > -1:
-            print('OperationalStateLabel: Stopped')
+            print('OperationalState: 0')
             return 'Stopped'
         else:
-            i = val.find('OperationalStateLabel: Paused')
+            i = val.find('OperationalState: 2')
             if i > -1:
-                print('OperationalStateLabel: Paused')
+                print('OperationalState: 2')
                 return 'Paused'
     
     i = val.find('CurrentMode: 0')
