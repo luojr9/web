@@ -28,16 +28,21 @@ def cmd():
     if i > -1:
         print('OperationalState: 1')
         return 'Running'
-    else:
-        i = val.find('OperationalState: 0')
-        if i > -1:
-            print('OperationalState: 0')
-            return 'Stopped'
-        else:
-            i = val.find('OperationalState: 2')
-            if i > -1:
-                print('OperationalState: 2')
-                return 'Paused'
+
+    i = val.find('OperationalState: 0')
+    if i > -1:
+        print('OperationalState: 0')
+        return 'Stopped'
+
+    i = val.find('OperationalState: 2')
+    if i > -1:
+        print('OperationalState: 2')
+        return 'Paused'
+    
+    i = val.find('OperationalState: 3')
+    if i > -1:
+        print('OperationalState: 3')
+        return 'OperationalState Error'
     
     i = val.find('CurrentMode: 0')
     if i > -1:
@@ -88,6 +93,51 @@ def cmd():
     if i > -1:
         print('Device unpair Failure')
         return 'Device unpair Failure'
+
+    i = val.find('ErrorStateID: 0')
+    if i > -1:
+        print('ErrorStateID: 0')
+        return 'ErrorStateID: 0'
+
+    i = val.find('ErrorStateID: 1')
+    if i > -1:
+        print('ErrorStateID: 1')
+        return 'ErrorStateID: 1'
+
+    i = val.find('ErrorStateID: 3')
+    if i > -1:
+        print('ErrorStateID: 3')
+        return 'ErrorStateID: 3'
+
+    i = val.find('CHIP:TOO:     status: 0')
+    if i > -1:
+        print('change mode success')
+        return 'change mode success'
+
+    i = val.find('CHIP:TOO:     status: 1')
+    if i > -1:
+        print('UnsupportedMode')
+        return 'UnsupportedMode'
+
+    i = val.find('CHIP:TOO:     status: 2')
+    if i > -1:
+        print('change mode fail')
+        return 'change mode fail'
+
+    i = val.find('CHIP:TOO:   State: 1')
+    if i > -1:
+        print('Inflow Error')
+        return 'Inflow Error'
+
+    i = val.find('CHIP:TOO:   State: 4')
+    if i > -1:
+        print('Door Open Error')
+        return 'Door Open Error'
+
+    i = val.find('CHIP:TOO:   State: 8')
+    if i > -1:
+        print('TempTooLow')
+        return 'TempTooLow'
 
 
 
