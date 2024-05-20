@@ -124,6 +124,11 @@ def cmd():
         print('change mode fail')
         return 'change mode fail'
 
+    i = val.find('CHIP:TOO:   State: 0')
+    if i > -1:
+        print('No Alarm')
+        return 'No Alarm'
+
     i = val.find('CHIP:TOO:   State: 1')
     if i > -1:
         print('Inflow Error')
